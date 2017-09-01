@@ -13,8 +13,8 @@ node {
   }
   
   stage('build') {
-    bat 'set M2_HOME=C:\Program Files\Apache\maven'
-    bat 'set path=C:\Program Files\Apache\maven\bin:%path%;'
+    bat 'set M2_HOME = C:\Program Files\Apache\maven'
+    bat 'set path = C:\Program Files\Apache\maven\bin:%path%;'
     bat 'mvn -version'
   }
   
