@@ -13,10 +13,12 @@ node {
   
   stage('init') {
     checkout scm
+    mvnHome = tool 'M2_HOME'
+    bat 'echo mvnHome'
   }
   
   stage('build') {
-    mvnHome = tool 'M3'
+    
     bat '${mvnHome}/bin/mvn -version'
   }
   
