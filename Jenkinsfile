@@ -19,7 +19,7 @@ node {
   
   stage('build') {
     
-    bat '${mvnHome}/bin/mvn -version'
+    bat 'C:/Program Files/Apache/maven/bin/mvn -version'
   }
   
   stage('deploy') {
