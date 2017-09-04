@@ -26,7 +26,7 @@ node {
     def resourceGroup = 'myResourceGroupJenkins' 
     def webAppName = 'SpringBootApp2'
     // login Azure
-    withCredentials([azureServicePrincipal('Azure')]) {
+    withCredentials([azureServicePrincipal('MASP')]) {
       bat '''
         az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
         az account set -s $AZURE_SUBSCRIPTION_ID
