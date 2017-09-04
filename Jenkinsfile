@@ -8,36 +8,30 @@ def getFtpPublishProfile(def publishProfilesJson) {
 }
 
 node {
-  
-  def mvnHome 
-  
   stage('init') {
     checkout scm
-    mvnHome = tool 'M2_HOME'
-    bat 'echo mvnHome'
   }
   
   stage('build') {
-    
-    bat 'C:/Program Files/Apache/maven/bin/mvn -version'
+    sh 'mvn clean package'
   }
   
   stage('deploy') {
-    def resourceGroup = 'myResourceGroupJenkins' 
-    def webAppName = 'SpringBootApp2'
+    def resourceGroup = '<myResourceGroup>' 
+    def webAppName = '<app_name>'
     // login Azure
-    withCredentials([azureServicePrincipal('MASP')]) {
-      bat '''
+    withCredentials([azureServicePrincipal('<mySrvPrincipal>')]) {
+      sh '''
         az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
         az account set -s $AZURE_SUBSCRIPTION_ID
       '''
     }
     // get publish settings
-    def pubProfilesJson = bat script: "az webapp deployment list-publishing-profiles -g $resourceGroup -n $webAppName", returnStdout: true
+    def pubProfilesJson = sh script: "az webapp deployment list-publishing-profiles -g $resourceGroup -n $webAppName", returnStdout: true
     def ftpProfile = getFtpPublishProfile pubProfilesJson
     // upload package
-    bat "curl -T target/calculator-1.0.war $ftpProfile.url/webapps/ROOT.war -u '$ftpProfile.username:$ftpProfile.password'"
+    sh "curl -T target/calculator-1.0.war $ftpProfile.url/webapps/ROOT.war -u '$ftpProfile.username:$ftpProfile.password'"
     // log out
-    bat 'az logout'
+    sh 'az logout'
   }
 }
