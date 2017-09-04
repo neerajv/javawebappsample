@@ -13,7 +13,7 @@ node {
   }
   
   stage('build') {
-    sh 'mvn clean package'
+    sh '/opt/apache-maven-3.5.0/bin/./mvn clean package'
   }
   
   stage('deploy') {
