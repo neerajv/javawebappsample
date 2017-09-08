@@ -13,14 +13,14 @@ node {
   }
   
   stage('build') {
-    sh '/opt/apache-maven-3.5.0/bin/./mvn clean package'
+    sh 'mvn clean package'
   }
   
   stage('deploy') {
     def resourceGroup = 'myResourceGroupJenkins' 
     def webAppName = 'SpringBootApp2'
     // login Azure
-    withCredentials([azureServicePrincipal('MASP')]) {
+    withCredentials([azureServicePrincipal('azuresp1')]) {
       sh '''
         az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
         az account set -s $AZURE_SUBSCRIPTION_ID
